@@ -7,8 +7,8 @@
 /* -------------------- */
 
 @layer base {
-  body {
-    @apply bg-gradient-to-br from-pink-100 to-blue-100 text-gray-800 font-sans leading-relaxed min-h-screen;
+  html, body {
+    @apply bg-black text-white font-sans leading-relaxed min-h-screen m-0 p-0;
   }
 
   h1, h2, h3, h4 {
@@ -16,11 +16,11 @@
   }
 
   a {
-    @apply text-blue-600 hover:underline;
+    @apply text-[#bfa382] hover:text-white hover:underline transition-colors duration-300;
   }
 
   input, textarea, select, button {
-    @apply rounded-xl px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition;
+    @apply rounded-xl px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#bfa382] transition;
   }
 }
 
@@ -33,7 +33,7 @@
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-pink-500 to-blue-500 text-white font-semibold px-5 py-2 rounded-full shadow-md hover:scale-105 hover:brightness-110 transition-all duration-300;
+    @apply bg-[#bfa382] text-white font-semibold px-5 py-2 rounded-full shadow-md hover:scale-105 hover:brightness-125 transition-all duration-300;
   }
 
   .chat-bubble {
@@ -41,7 +41,7 @@
   }
 
   .chat-bubble.user {
-    @apply bg-blue-500 self-end;
+    @apply bg-[#bfa382] self-end;
   }
 
   .chat-bubble.other {
