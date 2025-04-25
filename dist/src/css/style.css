@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------------------- */
+/* 🌸 Custom Base Setup */
+/* -------------------- */
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-pink-100 to-blue-100 text-gray-800 font-sans leading-relaxed min-h-screen;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-bold text-gray-900;
+  }
+
+  a {
+    @apply text-blue-600 hover:underline;
+  }
+
+  input, textarea, select, button {
+    @apply rounded-xl px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition;
+  }
+}
+
+/* -------------------- */
+/* 💎 Fancy Components */
+/* -------------------- */
+@layer components {
+  .card {
+    @apply bg-white shadow-md rounded-2xl p-6 transition hover:shadow-xl;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-pink-500 to-blue-500 text-white font-semibold px-5 py-2 rounded-full shadow-md hover:scale-105 hover:brightness-110 transition-all duration-300;
+  }
+
+  .chat-bubble {
+    @apply max-w-xs px-4 py-3 rounded-2xl shadow text-white text-sm;
+  }
+
+  .chat-bubble.user {
+    @apply bg-blue-500 self-end;
+  }
+
+  .chat-bubble.other {
+    @apply bg-gray-300 text-gray-900 self-start;
+  }
+
+  .glass {
+    @apply bg-white/60 backdrop-blur-md border border-white/20 rounded-2xl shadow-md;
+  }
+}
+
+/* -------------------- */
+/* 🎨 Animation / Fun */
+/* -------------------- */
+@layer utilities {
+  .fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

@@ -1,3 +1,7 @@
+import { initializeApp } from 'firebase/app'
+import { getAuth } from 'firebase/auth'
+import { getDatabase } from 'firebase/database'
+
 var config = {
     apiKey: "AIzaSyBvBMSzqJuOOsSIEhyM-sVI-vinaIu2GC8",
     authDomain: "midterm-project-ab3aa.firebaseapp.com",
@@ -9,4 +13,8 @@ var config = {
     measurementId: "G-LB3317B8W5",
     databaseURL: "https://midterm-project-ab3aa-default-rtdb.firebaseio.com"
 };
-firebase.initializeApp(config);
+
+const app = initializeApp(config)
+
+export const auth = getAuth(app)
+export const db = getDatabase(app)
