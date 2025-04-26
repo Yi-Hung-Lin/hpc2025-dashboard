@@ -16,6 +16,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { backgroundElement } = useDynamicBackground()
   const emailRef = useRef<HTMLInputElement>(null)
@@ -31,17 +32,22 @@ const LoginPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setLoading(true)
     try {
       if (isRegister) {
         await createUserWithEmailAndPassword(auth, email, password)
+        navigate('/profile')
       } else {
         await signInWithEmailAndPassword(auth, email, password)
+        navigate('/chat')
       }
-      navigate('/chat')
     } catch (err: any) {
       setError(err.message)
+    } finally {
+      setLoading(false)
     }
   }
+
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider()

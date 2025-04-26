@@ -17,6 +17,9 @@ const ChatroomPage = () => {
   const [input, setInput] = useState('')
   const navigate = useNavigate()
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const goToProfile = () => {
+    navigate('/profile')
+  }
 
   const db = getDatabase()
 
@@ -72,6 +75,12 @@ const ChatroomPage = () => {
       {/* Header */}
       <div className="z-10 flex justify-between items-center p-4 bg-black/50 backdrop-blur-md border-b border-white/10">
         <h1 className="text-xl font-bold">夜のチャット</h1>
+        <button
+            onClick={goToProfile}
+            className="text-[#bfa382] hover:text-white font-semibold transition"
+            >
+            Profile
+        </button>
         <button
           onClick={handleLogout}
           className="text-[#bfa382] hover:text-white font-semibold transition"
