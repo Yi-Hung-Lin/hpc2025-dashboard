@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { auth } from '../config'
 import {
   createUserWithEmailAndPassword,
@@ -18,6 +18,15 @@ const LoginPage = () => {
   const [error, setError] = useState('')
   const navigate = useNavigate()
   const { backgroundElement } = useDynamicBackground()
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
+
+
+  useEffect(() => {
+    setEmail('')
+    setPassword('')
+    setError('')
+  }, [isRegister])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
