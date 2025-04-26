@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { getDatabase, ref as dbRef, onValue, push, set } from 'firebase/database'
 import { auth } from '../config'
 import {
   createUserWithEmailAndPassword,
@@ -52,12 +53,31 @@ const LoginPage = () => {
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider()
     try {
-      await signInWithPopup(auth, provider)
+      const result = await signInWithPopup(auth, provider)
+      const user = result.user
+  
+      // 連接 Database
+      const db = getDatabase()
+      const userRef = dbRef(db, `users/${user.uid}`)
+  
+      // 先去看看 Database 裡有沒有這個使用者資料
+      onValue(userRef, (snapshot) => {
+        if (!snapshot.exists()) {
+          // 沒有的話，建立一筆新資料
+          set(userRef, {
+            nickname: user.displayName || "匿名使用者",
+            avatarUrl: user.photoURL || '',
+            themeColor: '#bfa382'
+          })
+        }
+      }, { onlyOnce: true })
+  
       navigate('/chat')
     } catch (err: any) {
       setError(err.message)
     }
   }
+  
 
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center font-zen bg-black text-white overflow-hidden">

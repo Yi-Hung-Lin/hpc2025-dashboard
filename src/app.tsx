@@ -28,8 +28,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={user ? <Navigate to="/chat" /> : <WelcomePage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/login" element={user ? <Navigate to="/chat" /> : <LoginPage />} />
         <Route path="/chat" element={user ? <ChatroomPage /> : <Navigate to="/login" />} />
         <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
       </Routes>
