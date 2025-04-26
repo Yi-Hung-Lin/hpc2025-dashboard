@@ -3,11 +3,20 @@ import { getDatabase, ref as dbRef, set, onValue } from 'firebase/database'
 import { auth } from '../config'
 import { useNavigate } from 'react-router-dom'
 import { useDynamicBackground } from '../hooks/useDynamicBackground'
+const themeOptions = [
+    { name: 'Sakura Pink', color: '#f9c5d1' },
+    { name: 'Night Blue', color: '#1e3a8a' },
+    { name: 'Forest Brown', color: '#bfa382' },
+    { name: 'Cloud Gray', color: '#d1d5db' },
+    { name: 'Lavender Purple', color: '#a78bfa' }
+]
 
 const ProfilePage = () => {
     const [nickname, setNickname] = useState('')
     const [avatarFile, setAvatarFile] = useState<File | null>(null)
     const [avatarPreview, setAvatarPreview] = useState<string>('')
+    const [themeColor, setThemeColor] = useState(themeOptions[2].color) // 預設 Forest Brown
+    const [statusMessage, setStatusMessage] = useState('')
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
     const CLOUD_NAME = 'dhtqetylj'
@@ -15,6 +24,7 @@ const ProfilePage = () => {
     const user = auth.currentUser
     const fileInputRef = useRef<HTMLInputElement>(null)
     const { backgroundElement } = useDynamicBackground()
+    
   
     useEffect(() => {
         if (!user) {
@@ -29,7 +39,9 @@ const ProfilePage = () => {
           const data = snapshot.val()
           if (data) {
             setNickname(data.nickname || '')
+            setStatusMessage(data.statusMessage || '')
             setAvatarPreview(data.avatarUrl || '')
+            setThemeColor(data.themeColor || themeOptions[2].color)
           }
           setLoading(false)
         })
@@ -62,8 +74,10 @@ const ProfilePage = () => {
         }
     
         await set(profileRef, {
-          nickname: nickname,
-          avatarUrl: avatarUrl
+            nickname,
+            statusMessage,
+            themeColor,
+            avatarUrl
         })
     
         navigate('/chat')
@@ -112,11 +126,36 @@ const ProfilePage = () => {
               placeholder="Enter your nickname"
               className="rounded-xl px-4 py-2 text-black w-full bg-white/90 placeholder-gray-500"
             />
-    
+
+            {/* 狀態訊息 */}
+            <input
+            type="text"
+            value={statusMessage}
+            onChange={(e) => setStatusMessage(e.target.value)}
+            placeholder="What's on your mind?"
+            className="rounded-xl px-4 py-2 text-black w-full bg-white/90 placeholder-gray-500"
+            />
+
+            {/* 主題色選擇 */}
+            <div className="flex space-x-3 justify-center">
+            {themeOptions.map((theme) => (
+                <button
+                key={theme.color}
+                type="button"
+                onClick={() => setThemeColor(theme.color)}
+                style={{ backgroundColor: theme.color }}
+                className={`w-8 h-8 rounded-full border-2 ${
+                    themeColor === theme.color ? 'border-white' : 'border-transparent'
+                } transition-all`}
+                />
+            ))}
+            </div>
+
             {/* 儲存按鈕 */}
             <button
               onClick={handleSave}
               className="w-full bg-[#bfa382] text-white font-bold px-6 py-3 rounded-full hover:scale-105 hover:brightness-110 transition"
+              style={{ backgroundColor: themeColor }}
             >
               Save
             </button>

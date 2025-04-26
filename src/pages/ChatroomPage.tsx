@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useDynamicBackground } from '../hooks/useDynamicBackground'
 import { auth } from '../config'
 import { signOut } from 'firebase/auth'
-import { getDatabase, ref, push, onChildAdded } from 'firebase/database'
+import { getDatabase, ref, push, onChildAdded, set, onValue } from 'firebase/database'
 import { useNavigate } from 'react-router-dom'
 
 type Message = {
@@ -17,10 +17,11 @@ const ChatroomPage = () => {
   const [input, setInput] = useState('')
   const navigate = useNavigate()
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [themeColor, setThemeColor] = useState('#bfa382') // 預設你的 Forest Brown
   const goToProfile = () => {
     navigate('/profile')
   }
-
+  const user = auth.currentUser
   const db = getDatabase()
 
   // 監聽 Firebase 上的訊息
@@ -35,6 +36,17 @@ const ChatroomPage = () => {
           sender: data.sender
         }])
       }
+    })
+    if(!user){
+        navigate('/login')
+        return
+    }
+    const profileRef = ref(db, `users/${user.uid}`)
+    onValue(profileRef, (snapshot) => {
+        const data = snapshot.val()
+        if (data && data.themeColor) {
+        setThemeColor(data.themeColor)
+        }
     })
   }, [])
 
@@ -74,16 +86,18 @@ const ChatroomPage = () => {
 
       {/* Header */}
       <div className="z-10 flex justify-between items-center p-4 bg-black/50 backdrop-blur-md border-b border-white/10">
-        <h1 className="text-xl font-bold">夜のチャット</h1>
+        <h1 className="text-xl font-bold" text-white>夜のチャット</h1>
         <button
             onClick={goToProfile}
             className="text-[#bfa382] hover:text-white font-semibold transition"
+            style={{ backgroundColor: themeColor }}
             >
             Profile
         </button>
         <button
           onClick={handleLogout}
           className="text-[#bfa382] hover:text-white font-semibold transition"
+          style={{ backgroundColor: themeColor }}
         >
           Logout
         </button>
@@ -99,7 +113,10 @@ const ChatroomPage = () => {
                 key={msg.id}
                 className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
             >
-                <div className={`${isMe ? 'bg-[#bfa382] text-white' : 'bg-white/90 text-black'} p-3 rounded-2xl max-w-xs break-words`}>
+                <div 
+                    className={`${isMe ? ' text-white' : 'text-black'} p-3 rounded-2xl max-w-xs break-words`} 
+                    style={{ backgroundColor: isMe ? themeColor : '#d1d5db' }}
+                >
                 {msg.text}
                 </div>
             </div>
@@ -120,6 +137,7 @@ const ChatroomPage = () => {
         <button
           type="submit"
           className="bg-[#bfa382] text-white font-bold px-6 py-2 rounded-full hover:scale-105 hover:brightness-110 transition"
+          style={{ backgroundColor: themeColor }}
         >
           Send
         </button>
