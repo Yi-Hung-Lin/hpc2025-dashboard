@@ -8,6 +8,7 @@ import {
 } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { Eye, EyeOff } from 'lucide-react'
+import { useDynamicBackground } from '../hooks/useDynamicBackground'
 
 const LoginPage = () => {
   const [isRegister, setIsRegister] = useState(false)
@@ -16,6 +17,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const { backgroundElement } = useDynamicBackground()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -44,7 +46,7 @@ const LoginPage = () => {
 
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center font-zen bg-black text-white overflow-hidden">
-      <div className="absolute inset-0 bg-[url('/image/ginza-night.jpg')] bg-cover bg-center opacity-20 pointer-events-none z-0" />
+      {backgroundElement}
 
       <div className="z-10 bg-black/50 backdrop-blur-md rounded-2xl px-6 py-8 w-full max-w-sm sm:max-w-md space-y-6 shadow-xl">
         {/* Tab 切換 */}

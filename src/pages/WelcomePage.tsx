@@ -1,13 +1,15 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDynamicBackground } from '../hooks/useDynamicBackground'
 
 const WelcomePage = () => {
   const navigate = useNavigate()
+  const { backgroundElement } = useDynamicBackground()
 
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-black font-zen text-white">
       {/* 背景圖片層 */}
-      <div className="absolute inset-0 bg-[url('/image/ginza-night.jpg')] bg-cover bg-center opacity-20 pointer-events-none z-0" />
+      {backgroundElement}
 
       {/* 卡片內容 */}
       <div className="z-10 bg-black/50 backdrop-blur-md p-10 rounded-2xl max-w-md text-center shadow-xl">
