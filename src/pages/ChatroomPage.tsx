@@ -93,7 +93,7 @@ const ChatroomPage = () => {
         setGroups(groupList)
       }
     })
-  }, [navigate])
+  }, [user, navigate])
 
   useEffect(() => {
     const db = getDatabase()

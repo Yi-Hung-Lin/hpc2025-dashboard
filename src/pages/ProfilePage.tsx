@@ -3,6 +3,7 @@ import { getDatabase, ref as dbRef, set, onValue } from 'firebase/database'
 import { auth } from '../config'
 import { useNavigate } from 'react-router-dom'
 import { useDynamicBackground } from '../hooks/useDynamicBackground'
+import { update } from 'firebase/database'
 const themeOptions = [
     { name: 'Sakura Pink', color: '#f9c5d1' },
     { name: 'Night Blue', color: '#1e3a8a' },
@@ -66,20 +67,20 @@ const ProfilePage = () => {
         if (!user) return
         const db = getDatabase()
         const profileRef = dbRef(db, `users/${user.uid}`)
-    
+      
         let avatarUrl = avatarPreview
-    
+      
         if (avatarFile) {
           avatarUrl = await uploadAvatar(avatarFile)
         }
-    
-        await set(profileRef, {
-            nickname,
-            statusMessage,
-            themeColor,
-            avatarUrl
+      
+        await update(profileRef, {
+          nickname,
+          statusMessage,
+          themeColor,
+          avatarUrl
         })
-    
+      
         navigate('/chat')
       }
     
