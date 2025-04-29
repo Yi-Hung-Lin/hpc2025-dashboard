@@ -4,6 +4,7 @@ import { auth } from '../config'
 import { useNavigate } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { useDynamicBackground } from '../hooks/useDynamicBackground'
+import ProfileModal from "../components/ProfileModal"
 
 function sanitizeInput(input: string) {
     return input.replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -35,6 +36,8 @@ const ChatroomPage = () => {
   const [showGifModal, setShowGifModal] = useState(false)
   const [gifResults, setGifResults] = useState<any[]>([])
   const [gifSearch, setGifSearch] = useState("")
+  const [selectedUser, setSelectedUser] = useState<any | null>(null)
+  const [showProfileModal, setShowProfileModal] = useState(false)
 
   const user = auth.currentUser
 
@@ -76,7 +79,7 @@ const ChatroomPage = () => {
       if (data) {
         const friendsList = Object.entries(data)
           .filter(([uid]) => uid !== user.uid)
-          .map(([uid, info]: any) => ({ uid, nickname: info.nickname, avatarUrl: info.avatarUrl }))
+          .map(([uid, info]: any) => ({ uid, nickname: info.nickname, avatarUrl: info.avatarUrl, statusMessage: info.statusMessage || ''}))
         setFriends(friendsList)
       }
     })
@@ -139,6 +142,10 @@ const ChatroomPage = () => {
     if (!newMessage.trim()) return
     const db = getDatabase()
     if (!user) return
+    if (currentRoom !== 'public' && currentGroupId === '' && !myFriends.includes(currentRoom)) {
+        alert('你必須先加對方為好友才能私訊喔 🌸')
+        return
+    }
   
     const timestamp = Date.now()
     const msg = { text: sanitizeInput(newMessage), sender: user.uid, nickname, avatarUrl, timestamp }
@@ -393,6 +400,21 @@ const ChatroomPage = () => {
         </div>
         )}
 
+      {showProfileModal && selectedUser && (
+        <ProfileModal
+            user={selectedUser}
+            isFriend={myFriends.includes(selectedUser.uid)}
+            onStartChat={() => {
+            setCurrentRoom(selectedUser.uid)
+            setCurrentGroupId('')
+            setShowProfileModal(false)
+            }}
+            onAddFriend={() => handleAddFriend(selectedUser.uid)}
+            onClose={() => setShowProfileModal(false)}
+        />
+        )}
+
+
       {showGroupModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-black/90 text-white/80 p-6 rounded-2xl w-80 space-y-4">
@@ -540,7 +562,18 @@ const ChatroomPage = () => {
                     <div id={`msg-${msg.id}`} className={`flex ${msg.sender === user?.uid ? 'justify-end' : 'justify-start'} fade-in`}>
                         <div className="flex items-end space-x-2">
                         {msg.sender !== user?.uid && (
-                            <img src={msg.avatarUrl || '/image/default-avatar.jpg'} alt="avatar" className="w-8 h-8 rounded-full object-cover" />
+                            <img 
+                            src={msg.avatarUrl || '/image/default-avatar.jpg'} 
+                            alt="avatar" 
+                            className="w-8 h-8 rounded-full object-cover"
+                            onClick={() => {
+                                const selected = friends.find((f) => f.uid === msg.sender)
+                                if (selected) {
+                                  setSelectedUser(selected)
+                                  setShowProfileModal(true)
+                                }
+                            }}
+                            />
                         )}
                         <div className="flex flex-col items-start max-w-xs">
 
