@@ -3,11 +3,14 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { onAuthStateChanged, User } from 'firebase/auth'
 import { auth } from './config'
 
-// 頁面元件匯入（請確認路徑正確）
-import WelcomePage from './pages/WelcomePage'
+import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import ChatroomPage from './pages/ChatroomPage'
-import ProfilePage from './pages/ProfilePage' // 如果還沒做可以先註解
+import ProfilePage from './pages/ProfilePage'
+import AboutPage from './pages/AboutPage'
+import ProjectsPage from './pages/ProjectPage'
+import HPCPage from './pages/HPCpage'
+import NavBar from './components/NavBar'
 
 function App() {
   const [user, setUser] = useState<User | null>(null)
@@ -27,11 +30,18 @@ function App() {
 
   return (
     <Router>
+      {/* 導覽列固定在最外層 */}
+      <NavBar />
+
+      {/* 路由管理 */}
       <Routes>
-        <Route path="/" element={<WelcomePage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={user ? <Navigate to="/chat" /> : <LoginPage />} />
         <Route path="/chat" element={user ? <ChatroomPage /> : <Navigate to="/login" />} />
         <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/hpc" element={<HPCPage />} />
       </Routes>
     </Router>
   )

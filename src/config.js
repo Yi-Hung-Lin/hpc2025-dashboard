@@ -3,15 +3,15 @@ import { getAuth } from 'firebase/auth'
 import { getDatabase } from 'firebase/database'
 
 var config = {
-    apiKey: "AIzaSyBvBMSzqJuOOsSIEhyM-sVI-vinaIu2GC8",
-    authDomain: "midterm-project-ab3aa.firebaseapp.com",
-    databaseURL: "https://midterm-project-ab3aa-default-rtdb.firebaseio.com",
-    projectId: "midterm-project-ab3aa",
-    storageBucket: "midterm-project-ab3aa.firebasestorage.app",
-    messagingSenderId: "13475203739",
-    appId: "1:13475203739:web:f722da780a822b88ff543e",
-    measurementId: "G-LB3317B8W5",
-    databaseURL: "https://midterm-project-ab3aa-default-rtdb.firebaseio.com"
+    apiKey: "AIzaSyBGZDKKuWAkUaxV1rB-fkH1tYjj_kLcQSM",
+    authDomain: "personal-webpage-4fee5.firebaseapp.com",
+    databaseURL: "https://personal-webpage-4fee5-default-rtdb.firebaseio.com",
+    projectId: "personal-webpage-4fee5",
+    storageBucket: "personal-webpage-4fee5.firebasestorage.app",
+    messagingSenderId: "436484530906",
+    appId: "1:436484530906:web:b29b6e67621aa2009cfbe3",
+    measurementId: "G-3QP9ZY1ZF7",
+    databaseURL: "https://personal-webpage-4fee5-default-rtdb.firebaseio.com"
 };
 
 const app = initializeApp(config)

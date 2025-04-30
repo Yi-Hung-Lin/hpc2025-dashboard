@@ -60,6 +60,11 @@
   .fade-in {
     animation: fadeIn 0.4s ease-out forwards;
   }
+  
+  .word-spacing-fix {
+    word-break: keep-all;
+    letter-spacing: 0.05em;
+  }
 
   @keyframes fadeIn {
     from {
