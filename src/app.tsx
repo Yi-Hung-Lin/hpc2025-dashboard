@@ -9,8 +9,10 @@ import ChatroomPage from './pages/ChatroomPage'
 import ProfilePage from './pages/ProfilePage'
 import AboutPage from './pages/AboutPage'
 import ProjectsPage from './pages/ProjectPage'
-import HPCPage from './pages/HPCpage'
+import HPCPage from './pages/HPCPage'
 import NavBar from './components/NavBar'
+import NotesIndex from './notes/index'
+import MpiNoteListPage from './notes/mpi'
 
 function App() {
   const [user, setUser] = useState<User | null>(null)
@@ -42,6 +44,8 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/hpc" element={<HPCPage />} />
+        <Route path="/notes" element={<NotesIndex />} />
+        <Route path="/notes/mpi" element={<MpiNoteListPage />} />
       </Routes>
     </Router>
   )

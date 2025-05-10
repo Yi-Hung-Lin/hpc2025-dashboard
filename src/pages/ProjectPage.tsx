@@ -11,21 +11,24 @@ const ProjectsPage = () => {
       description: '支援登入、私聊、GIF 傳送與群組管理的聊天室，採用 Firebase 與 React 技術實作。',
       tags: ['React', 'Firebase', 'Tailwind'],
       link: 'https://chang0608.github.io/chatroom',
-      repo: 'https://github.com/chang0608/chatroom'
+      repo: 'https://github.com/chang0608/chatroom',
+      progress: {solved: 95, total: 100}
     },
     {
       title: 'CSES Marathon',
       description: '紀錄我刷完 CSES 問題集的過程與筆記，附有原始碼與解題說明。',
       tags: ['C++', 'Algorithm', 'Competitive'],
       link: '',
-      repo: 'https://github.com/chang0608/cses-marathon'
+      repo: 'https://github.com/chang0608/cses-marathon',
+      progress: {solved: 0, total: 100}
     },
     {
       title: 'HPC 練習記錄',
       description: '整理 MPI、CUDA、OpenACC 等高效能計算實驗與心得，卡片式展示，支援 Modal 展開。',
       tags: ['MPI', 'CUDA', 'OpenACC'],
       link: '/hpc',
-      repo: 'https://github.com/chang0608/hpc-practice-log'
+      repo: 'https://github.com/chang0608/hpc-practice-log',
+      progress: {solved: 5, total: 100}
     }
   ]
 

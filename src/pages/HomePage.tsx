@@ -13,8 +13,8 @@ const HomePage = () => {
       {backgroundElement}
 
       {/* 主要卡片內容 */}
-      <div className="z-10 bg-black/50 backdrop-blur-md px-12 py-10 rounded-2xl max-w-3xl w-full text-center shadow-xl space-y-6 animate-fade-in">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-wider leading-relaxed text-white whitespace-nowrap">
+      <div className="z-10 bg-black/50 backdrop-blur-md p-6 sm:p-10 rounded-2xl w-full max-w-md text-center shadow-xl space-y-6 animate-fade-in">
+        <h1 className="text-2xl sm:text-4xl font-extrabold text-[#f9f6f1] mb-4 tracking-wider whitespace-nowrap">
         <Typewriter
             options={{
                 strings: ['夜の帳が降りる頃、物語は始まる。'],
