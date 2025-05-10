@@ -5,10 +5,8 @@ const NavBar = () => {
   const location = useLocation()
 
   const navItems = [
-    { name: '首頁', path: '/' },
-    { name: '聊天室', path: '/chat' },
-    { name: '作品集', path: '/projects' },
-    { name: '關於我', path: '/about' },
+    { name: '首頁', path: '/hpc2025-dashboard/' },
+    { name: '作品集', path: '/hpc2025-dashboard/projects' },
   ]
 
   return (

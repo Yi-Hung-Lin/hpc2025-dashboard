@@ -1,10 +1,12 @@
 {
-  "homepage": "https://Chang0608.github.io/",
+  "homepage": "https://Chang0608.github.io/hpc2025-dashboard",
   "name": "personal_website",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "start": "vite",
+    "build-logs": "node src/scripts/build-logs.js",
+    "prebuild": "npm run build-logs",
     "build": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build && copy dist\\index.html dist\\404.html",
@@ -34,6 +36,7 @@
     "gh-pages": "^6.3.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "vite": "^6.3.3"
   }

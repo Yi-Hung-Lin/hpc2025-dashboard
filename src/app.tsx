@@ -4,10 +4,6 @@ import { onAuthStateChanged, User } from 'firebase/auth'
 import { auth } from './config'
 
 import HomePage from './pages/HomePage'
-import LoginPage from './pages/LoginPage'
-import ChatroomPage from './pages/ChatroomPage'
-import ProfilePage from './pages/ProfilePage'
-import AboutPage from './pages/AboutPage'
 import ProjectsPage from './pages/ProjectPage'
 import HPCPage from './pages/HPCPage'
 import NavBar from './components/NavBar'
@@ -37,15 +33,11 @@ function App() {
 
       {/* 路由管理 */}
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={user ? <Navigate to="/chat" /> : <LoginPage />} />
-        <Route path="/chat" element={user ? <ChatroomPage /> : <Navigate to="/login" />} />
-        <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/projects" element={<ProjectsPage />} />
-        <Route path="/hpc" element={<HPCPage />} />
-        <Route path="/notes" element={<NotesIndex />} />
-        <Route path="/notes/mpi" element={<MpiNoteListPage />} />
+        <Route path="/hpc2025-dashboard/" element={<HomePage />} />
+        <Route path="/hpc2025-dashboard/projects" element={<ProjectsPage />} />
+        <Route path="/hpc2025-dashboard/hpc" element={<HPCPage />} />
+        <Route path="/hpc2025-dashboard/notes" element={<NotesIndex />} />
+        <Route path="/hpc2025-dashboard/notes/mpi" element={<MpiNoteListPage />} />
       </Routes>
     </Router>
   )
