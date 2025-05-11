@@ -78,42 +78,57 @@ export default function LogCard({
 
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center"
+          className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50"
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="bg-white/10 p-6 rounded-xl max-w-lg w-full max-h-[80vh] overflow-y-auto text-white backdrop-blur-md border border-white/20"
+            className="bg-white bg-opacity-10 border border-white/20 rounded-lg p-6 w-full max-w-xl max-h-[80vh] overflow-y-auto text-white"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-[#bfa382]">{title}'s Log</h3>
-              <button onClick={() => setIsOpen(false)} className="hover:underline text-sm text-white">
+              <h2 className="text-lg font-bold text-[#bfa382]">{title}'s Log</h2>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-white text-sm hover:underline"
+              >
                 Close
               </button>
             </div>
-            {fullLog.map((entry, i) => (
-              <div key={i} className="mb-4">
-                <h4 className="font-semibold text-sm mb-1 text-white">🕒 {entry.day}</h4>
-                <ul className="space-y-2">
-                  {entry.lines.map((line, i) => {
-                    if (typeof line === 'string') {
-                      return <li key={i}>{line}</li>
-                    }
-                    if (line.type === 'text') {
-                      return <li key={i}>{line.content}</li>
-                    }
-                    if (line.type === 'image') {
-                      return (
-                        <div key={i} className="my-2">
-                          <img src={line.src} alt="" className="rounded-lg max-w-full mx-auto" />
-                        </div>
-                      )
-                    }
-                    return null
-                  })}
-                </ul>
+            <div className="space-y-6">
+              {fullLog.map((entry, idx) => (
+                <div key={idx} className="mb-6">
+                  <h3 className="font-semibold text-base mb-2 text-white">🕒 {entry.day}</h3>
+                  <div className="space-y-2 text-sm">
+                    {entry.lines.map((line, i) => {
+                      if (typeof line === 'string') return <p key={i}>{line}</p>
+                      if (line.type === 'text') {
+                        const content = line.content
+                        const isSection = /^(✅|🧪|🐛|🗂|📁|📷|🖼|#)/.test(content)
+                        return (
+                          <p key={i} className={isSection ? 'mt-4 font-semibold text-white/90' : ''}>
+                            {content}
+                          </p>
+                        )
+                      }
+                      if (line.type === 'image') {
+                        return (
+                          <img
+                            key={i}
+                            src={line.src}
+                            alt="log-image"
+                            className="rounded-lg max-w-full mx-auto my-2 border border-white/20"
+                          />
+                        )
+                      }
+                      return null
+                    })}
+                  </div>
+                </div>
+              ))}
+              <div className="text-xs text-right text-white/50">
+                Last updated: {lastUpdated || 'N/A'}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       )}

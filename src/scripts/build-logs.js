@@ -4,35 +4,37 @@ const LOGS_DIR = path.resolve(__dirname, '../../logs')
 const OUTPUT_FILE = path.resolve(__dirname, '../../src/data/logs-data.ts')
 
 function parseLogFile(content) {
-  const sections = content.split(/##\s+(Day\s+\d+)/).slice(1)
+  const sections = content.split(/^##\s+\[(.*?)\]/gm).slice(1)
   const logs = []
+
   for (let i = 0; i < sections.length; i += 2) {
-    const day = sections[i].trim()
-    const lines = sections[i + 1]
-      .split(/\r?\n/)
+    const day = sections[i].split('-')[0].trim()
+    const rawLines = sections[i + 1].split(/\r?\n/)
+    const lines = rawLines
       .map((l) => l.trim())
       .filter((l) => l.length > 0)
       .map((l) => {
-        if (l.startsWith('![') || l.startsWith('!(')) {
-          const match = l.match(/\((.*?)\)/)
-          return { type: 'image', src: match?.[1] || '' }
-        } else if (l.startsWith('-')) {
-          return { type: 'text', content: l.replace(/^[-\s]+/, '') }
+        if (l.startsWith('![')) {
+          const match = l.match(/!\[.*?\]\((.*?)\)/)
+          return { type: 'image', src: match?.[1] || '' } // ✅ type: 'image'
         } else {
-          return { type: 'text', content: l }
+          return { type: 'text', content: l.replace(/^[-\s]+/, '') } // ✅ type: 'text'
         }
       })
     logs.push({ day, lines })
   }
+
   return logs
 }
 
 function generateLogData() {
   const files = fs.readdirSync(LOGS_DIR).filter((f) => f.endsWith('.md'))
+
   const result = files.map((filename) => {
     const filepath = path.join(LOGS_DIR, filename)
     const content = fs.readFileSync(filepath, 'utf-8')
     const fullLog = parseLogFile(content)
+
     const latestEntry = fullLog[fullLog.length - 1]?.lines?.find(l => l.type === 'text')
     const latest = latestEntry?.content || '尚無紀錄'
     const name = content.match(/^#\s+(.*)/)?.[1] || filename.replace('.md', '')
