@@ -28,7 +28,7 @@ export default function LogPage() {
               link={''}
               repo={log.github || ''}
               progress={log.progress}
-              fullLog={log.fullLog}
+              fullText= {log.fullText}
             />
           ))}
         </div>

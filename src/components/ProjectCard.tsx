@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { GithubIcon } from 'lucide-react'
 import { motion } from 'framer-motion'
+import ReactMarkdown from 'react-markdown'
 
 interface LogCardProps {
   title: string
@@ -14,13 +15,7 @@ interface LogCardProps {
     solved: number
     total: number
   }
-  fullLog?: {
-    day: string
-    lines: (
-      | { type: 'text'; content: string }
-      | { type: 'image'; src: string }
-    )[]
-  }[]
+  fullText?: string
   lastUpdated?: string
 }
 
@@ -31,10 +26,14 @@ export default function LogCard({
   link,
   repo,
   progress,
-  fullLog = [],
+  fullText = '',
   lastUpdated
 }: LogCardProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const cleanedText = fullText
+  .split(/\r?\n/)
+  .filter(line => !/^title:\s+/i.test(line.trim()))
+  .join('\n')
 
   return (
     <>
@@ -82,7 +81,7 @@ export default function LogCard({
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="bg-white bg-opacity-10 border border-white/20 rounded-lg p-6 w-full max-w-xl max-h-[80vh] overflow-y-auto text-white"
+            className="bg-white bg-opacity-10 border border-white/20 rounded-lg p-6 w-full max-w-3xl max-h-[80vh] overflow-y-auto text-white"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-4">
@@ -94,40 +93,11 @@ export default function LogCard({
                 Close
               </button>
             </div>
-            <div className="space-y-6">
-              {fullLog.map((entry, idx) => (
-                <div key={idx} className="mb-6">
-                  <h3 className="font-semibold text-base mb-2 text-white">🕒 {entry.day}</h3>
-                  <div className="space-y-2 text-sm">
-                    {entry.lines.map((line, i) => {
-                      if (typeof line === 'string') return <p key={i}>{line}</p>
-                      if (line.type === 'text') {
-                        const content = line.content
-                        const isSection = /^(✅|🧪|🐛|🗂|📁|📷|🖼|#)/.test(content)
-                        return (
-                          <p key={i} className={isSection ? 'mt-4 font-semibold text-white/90' : ''}>
-                            {content}
-                          </p>
-                        )
-                      }
-                      if (line.type === 'image') {
-                        return (
-                          <img
-                            key={i}
-                            src={line.src}
-                            alt="log-image"
-                            className="rounded-lg max-w-full mx-auto my-2 border border-white/20"
-                          />
-                        )
-                      }
-                      return null
-                    })}
-                  </div>
-                </div>
-              ))}
-              <div className="text-xs text-right text-white/50">
-                Last updated: {lastUpdated || 'N/A'}
-              </div>
+            <div className="prose prose-invert max-w-none leading-relaxed [&_h1]:text-white [&_h2]:text-[#bfa382] [&_h3]:text-white [&_h1:first-child]:hidden">
+              <ReactMarkdown>{cleanedText}</ReactMarkdown>
+            </div>
+            <div className="text-xs text-right text-white/50 mt-6">
+              Last updated: {lastUpdated || 'N/A'}
             </div>
           </div>
         </div>

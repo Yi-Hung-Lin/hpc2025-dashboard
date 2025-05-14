@@ -3,43 +3,38 @@ const path = require('path')
 const LOGS_DIR = path.resolve(__dirname, '../../logs')
 const OUTPUT_FILE = path.resolve(__dirname, '../../src/data/logs-data.ts')
 
-function parseLogFile(content) {
-  const sections = content.split(/^##\s+\[(.*?)\]/gm).slice(1)
-  const logs = []
+function extractLatestSummary(content) {
+  const dayMatch = content.match(/##\s+\[(Day[^\]]+)\]/)
+  const dayLabel = dayMatch ? dayMatch[1] : ''
 
-  for (let i = 0; i < sections.length; i += 2) {
-    const day = sections[i].split('-')[0].trim()
-    const rawLines = sections[i + 1].split(/\r?\n/)
-    const lines = rawLines
-      .map((l) => l.trim())
-      .filter((l) => l.length > 0)
-      .map((l) => {
-        if (l.startsWith('![')) {
-          const match = l.match(/!\[.*?\]\((.*?)\)/)
-          return { type: 'image', src: match?.[1] || '' } // ✅ type: 'image'
-        } else {
-          return { type: 'text', content: l.replace(/^[-\s]+/, '') } // ✅ type: 'text'
-        }
-      })
-    logs.push({ day, lines })
+  const lines = content.split(/\r?\n/)
+  const taskLine = lines.find((l) => /任務紀錄/.test(l))
+  const idx = lines.indexOf(taskLine)
+
+  let latestTask = ''
+  for (let i = idx + 1; i < lines.length; i++) {
+    const trimmed = lines[i].trim()
+    if (/^(#|##|---)/.test(trimmed)) break
+    if (trimmed.length > 0) {
+      latestTask = trimmed.replace(/^[-\s>*]+/, '')
+      break
+    }
   }
 
-  return logs
+  return dayLabel && latestTask ? `${dayLabel}：${latestTask}` : latestTask || '尚無紀錄'
 }
 
 function generateLogData() {
   const files = fs.readdirSync(LOGS_DIR).filter((f) => f.endsWith('.md'))
-
   const result = files.map((filename) => {
     const filepath = path.join(LOGS_DIR, filename)
     const content = fs.readFileSync(filepath, 'utf-8')
-    const fullLog = parseLogFile(content)
-
-    const latestEntry = fullLog[fullLog.length - 1]?.lines?.find(l => l.type === 'text')
-    const latest = latestEntry?.content || '尚無紀錄'
     const name = content.match(/^#\s+(.*)/)?.[1] || filename.replace('.md', '')
     const title = content.match(/title:\s+(.*)/)?.[1] || '未指定任務'
     const lastUpdated = fs.statSync(filepath).mtime.toISOString()
+    const progressCount = (content.match(/##\s+\[Day/g) || []).length
+
+    const latest = extractLatestSummary(content)
 
     return {
       id: filename.replace('.md', ''),
@@ -47,12 +42,12 @@ function generateLogData() {
       title,
       github: '',
       progress: {
-        solved: fullLog.length,
+        solved: progressCount,
         total: 7,
       },
       latest,
       lastUpdated,
-      fullLog,
+      fullText: content
     }
   })
 
