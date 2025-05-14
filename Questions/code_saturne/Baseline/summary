@@ -1,0 +1,164 @@
+========================================================
+Start time       : Tuesday May 13 23:46:56 CEST 2025
+========================================================
+  Command        : /home/hpc11/code_saturne/code_saturne-8.3.1/arch/Linux/bin/code_saturne run --initialize
+========================================================
+  Package path   : /home/hpc11/code_saturne/code_saturne-8.3.1/arch/Linux
+  ----------------------------------------------------
+  MPI path       : 
+  MPI type       : OpenMPI
+  ----------------------------------------------------
+  User           : hpc11
+  ----------------------------------------------------
+  Machine        : Linux node1 6.8.0-59-generic #61-Ubuntu SMP PREEMPT_DYNAMIC Fri Apr 11 23:16:11 UTC 2025 x86_64 x86_64 
+  N Procs        : 1
+  ----------------------------------------------------
+  Environment variables
+    BASH_FUNC__module_raw%%=() {  eval "$(/usr/bin/tclsh8.6 '/usr/lib/x86_64-linux-gnu/modulecmd.tcl' bash "$@")";
+ _mlstatus=$?;
+ return $_mlstatus
+}
+    BASH_FUNC__spack_shell_wrapper%%=() {  for var in DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH;
+ do
+ eval "if [ -n \"\${${var}-}\" ]; then export SPACK_$var=\${${var}}; fi";
+ done;
+ if [ -n "${ZSH_VERSION:-}" ]; then
+ emulate -L sh;
+ fi;
+ _sp_flags="";
+ while [ ! -z ${1+x} ] && [ "${1#-}" != "${1}" ]; do
+ _sp_flags="$_sp_flags $1";
+ shift;
+ done;
+ if [ -n "$_sp_flags" ] && [ "${_sp_flags#*h}" != "${_sp_flags}" ] || [ "${_sp_flags#*V}" != "${_sp_flags}" ]; then
+ command spack $_sp_flags "$@";
+ return;
+ fi;
+ _sp_subcommand="";
+ if [ ! -z ${1+x} ]; then
+ _sp_subcommand="$1";
+ shift;
+ fi;
+ case $_sp_subcommand in 
+ "cd")
+ _sp_arg="";
+ if [ -n "$1" ]; then
+ _sp_arg="$1";
+ shift;
+ fi;
+ if [ "$_sp_arg" = "-h" ] || [ "$_sp_arg" = "--help" ]; then
+ command spack cd -h;
+ else
+ LOC="$(SPACK_COLOR="${SPACK_COLOR:-always}" spack location $_sp_arg "$@")";
+ if [ -d "$LOC" ]; then
+ cd "$LOC";
+ else
+ return 1;
+ fi;
+ fi;
+ return
+ ;;
+ "env")
+ _sp_arg="";
+ if [ -n "$1" ]; then
+ _sp_arg="$1";
+ shift;
+ fi;
+ if [ "$_sp_arg" = "-h" ] || [ "$_sp_arg" = "--help" ]; then
+ command spack env -h;
+ else
+ case $_sp_arg in 
+ activate)
+ _a=" $@";
+ if [ "${_a#* --sh}" != "$_a" ] || [ "${_a#* --csh}" != "$_a" ] || [ "${_a#* -h}" != "$_a" ] || [ "${_a#* --help}" != "$_a" ]; then
+ command spack env activate "$@";
+ else
+ stdout="$(SPACK_COLOR="${SPACK_COLOR:-always}" command spack $_sp_flags env activate --sh "$@")" || return;
+ eval "$stdout";
+ fi
+ ;;
+ deactivate)
+ _a=" $@";
+ if [ "${_a#* --sh}" != "$_a" ] || [ "${_a#* --csh}" != "$_a" ]; then
+ command spack env deactivate "$@";
+ else
+ if [ -n "$*" ]; then
+ command spack env deactivate -h;
+ else
+ stdout="$(SPACK_COLOR="${SPACK_COLOR:-always}" command spack $_sp_flags env deactivate --sh)" || return;
+ eval "$stdout";
+ fi;
+ fi
+ ;;
+ *)
+ command spack env $_sp_arg "$@"
+ ;;
+ esac;
+ fi;
+ return
+ ;;
+ "load" | "unload")
+ _a=" $@";
+ if [ "${_a#* --sh}" != "$_a" ] || [ "${_a#* --csh}" != "$_a" ] || [ "${_a#* -h}" != "$_a" ] || [ "${_a#* --list}" != "$_a" ] || [ "${_a#* --help}" != "$_a" ]; then
+ command spack $_sp_flags $_sp_subcommand "$@";
+ else
+ stdout="$(SPACK_COLOR="${SPACK_COLOR:-always}" command spack $_sp_flags $_sp_subcommand --sh "$@")" || return;
+ eval "$stdout";
+ fi
+ ;;
+ *)
+ command spack $_sp_flags $_sp_subcommand "$@"
+ ;;
+ esac
+}
+    BASH_FUNC_spack%%=() {  : this is a shell function from: /opt/spack/share/spack/setup-env.sh;
+ : the real spack script is here: /opt/spack/bin/spack;
+ _spack_shell_wrapper "$@";
+ return $?
+}
+    DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+    DISPLAY=localhost:10.0
+    GMXBIN=/opt/gromacs-2025.1-mpi/bin
+    GMXDATA=/opt/gromacs-2025.1-mpi/share/gromacs
+    GMXLDLIB=/opt/gromacs-2025.1-mpi/lib
+    GMXMAN=/opt/gromacs-2025.1-mpi/share/man
+    GROMACS_DIR=/opt/gromacs-2025.1-mpi
+    HOME=/home/hpc11
+    LANG=en_US.UTF-8
+    LD_LIBRARY_PATH=/opt/gromacs-2025.1-mpi/lib:/opt/openmpi-5.0.7/bin:/home/hpc11/code_saturne/code_saturne-8.3.1/arch/Linux/lib:
+    LESSCLOSE=/usr/bin/lesspipe %s %s
+    LESSOPEN=| /usr/bin/lesspipe %s
+    LOADEDMODULES=
+    LOGNAME=hpc11
+    LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:
+    MANPATH=/opt/gromacs-2025.1-mpi/share/man:
+    MODULEPATH=/etc/environment-modules/modules:/usr/share/modules/versions:/usr/share/modules/$MODULE_VERSION/modulefiles:/usr/share/modules/modulefiles
+    MODULESHOME=/usr/share/modules
+    MODULES_CMD=/usr/lib/x86_64-linux-gnu/modulecmd.tcl
+    OLDPWD=/home/hpc11/code_saturne/LES_AIR_QUALITY_8.3.1/LES_AIR_QUALITY/AIR_QUALITY/DATA
+    PATH=/opt/gromacs-2025.1-mpi/bin/gmx_mpi:/opt/gromacs-2025.1-mpi/bin:/opt/spack/bin:/opt/openmpi-5.0.7/bin:/home/hpc11/code_saturne/code_saturne-8.3.1/arch/Linux/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+    PKG_CONFIG_PATH=/opt/gromacs-2025.1-mpi/lib/pkgconfig
+    PWD=/home/hpc11/code_saturne/LES_AIR_QUALITY_8.3.1/LES_AIR_QUALITY/AIR_QUALITY
+    SHELL=/bin/bash
+    SHLVL=1
+    SPACK_PYTHON=/usr/bin/python3
+    SPACK_ROOT=/opt/spack
+    SSH_CLIENT=10.26.11.7 49177 22
+    SSH_CONNECTION=10.26.11.7 49177 10.25.11.1 22
+    SSH_TTY=/dev/pts/1
+    TERM=xterm
+    USER=hpc11
+    XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+    XDG_RUNTIME_DIR=/run/user/1000
+    XDG_SESSION_CLASS=user
+    XDG_SESSION_ID=141
+    XDG_SESSION_TYPE=tty
+    _=/home/hpc11/code_saturne/code_saturne-8.3.1/arch/Linux/bin/code_saturne
+    __MODULES_LMINIT=module use --append /etc/environment-modules/modules:module use --append /usr/share/modules/versions:module use --append /usr/share/modules/$MODULE_VERSION/modulefiles:module use --append /usr/share/modules/modulefiles
+  ----------------------------------------------------
+  Case           : AIR_QUALITY
+    directory    : /home/hpc11/code_saturne/LES_AIR_QUALITY_8.3.1/LES_AIR_QUALITY/AIR_QUALITY
+    results dir. : /home/hpc11/code_saturne/LES_AIR_QUALITY_8.3.1/LES_AIR_QUALITY/AIR_QUALITY/RESU/20250513-2346
+    preprocessor : /home/hpc11/code_saturne/code_saturne-8.3.1/arch/Linux/libexec/code_saturne/cs_preprocess
+    solver       : ./cs_solver
+  ----------------------------------------------------

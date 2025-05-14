@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Export paths here if necessary or recommended.
+export LD_LIBRARY_PATH="/opt/openmpi-5.0.7/lib":$LD_LIBRARY_PATH
+
+# Load environment if this script is run directly.
+if test "$CS_ENVIRONMENT_SET" != "true" ; then
+  export LMOD_PAGER=none
+  module purge
+fi
+
+# Library search path for code_saturne.
+export LD_LIBRARY_PATH="/home/hpc11/code_saturne/code_saturne-8.3.1/arch/Linux/lib":$LD_LIBRARY_PATH
+
+
+export OMP_NUM_THREADS=1
+
+cd /home/hpc11/code_saturne/LES_AIR_QUALITY_8.3.1/LES_AIR_QUALITY/AIR_QUALITY/RESU/20250513-2346
+
+# Run solver.
+mpirun -np 24 -host node1:12,node2:12 ./cs_solver "$@"
+export CS_RET=$?
+
+exit $CS_RET
